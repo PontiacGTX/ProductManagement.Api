@@ -52,6 +52,37 @@ namespace ProductManagement.Api.Controllers
             string validationMessage = ModelState.GetErrors();
             return StatusCode(StatusCodes.Status400BadRequest, Factory.ObtenerRespuesta<Respuesta>(null, StatusCodes.Status400BadRequest, validationMessage));
         }
+        [HttpPost("Usuarios/Usuario/ExisteEmail")]
+        public async Task<IActionResult> ObtenerUsuario(ExisteUsuarioModel modelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Respuesta respuesta = await UnidadServicios.UsuarioServicios.ExisteUsuario(modelo);
+                    return respuesta.StatusCode switch
+                    {
+                        StatusCodes.Status200OK => Ok(respuesta),
+                        StatusCodes.Status401Unauthorized => StatusCode(StatusCodes.Status401Unauthorized, respuesta),
+                        StatusCodes.Status404NotFound => StatusCode(StatusCodes.Status404NotFound, respuesta),
+                        _ => throw new ServerException(string.IsNullOrEmpty(respuesta.Message) ? "There was an unexpected error" : respuesta.Message, respuesta.StatusCode),
+                    };
+                }
+                catch (System.Exception ex)
+                {
+                    string message = ex.Message;
+                    if (ex is ServerException)
+                    {
+                        message = string.Concat(ex.Message, $" HttpStatus: {(ex as ServerException).ApiCode}");
+                    }
+                    return StatusCode(StatusCodes.Status500InternalServerError, Factory.ObtenerRespuesta<InternalServerErrorResponse>(null, message: message));
+                }
+
+            }
+
+            string validationMessage = ModelState.GetErrors();
+            return StatusCode(StatusCodes.Status400BadRequest, Factory.ObtenerRespuesta<Respuesta>(null, StatusCodes.Status400BadRequest, validationMessage));
+        }
 
         [HttpPost("Usuarios/Crear")]
         public async Task<IActionResult> CrearUsuario(CrearUsuarioModel modelo)

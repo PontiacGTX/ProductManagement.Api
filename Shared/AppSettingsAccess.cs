@@ -32,6 +32,7 @@ namespace Shared
         }
         public string ApiBaseUrl => Configuration["ServiciosAdministracion:baseurlApi"];
         public string EndpointObtenerUsuario => Configuration["ServiciosAdministracion:ObtenerUsuario"];
+        public string EndpointExisteUsuario => Configuration["ServiciosAdministracion:ExisteUsuario"];
         public string EndpointCrearUsuario => Configuration["ServiciosAdministracion:CrearUsuario"];
         public string EndpointAgregarProducto => Configuration["ServiciosAdministracion:AgregarProducto"];
         public string EndpointEliminarProducto => Configuration["ServiciosAdministracion:EliminarProductos"];

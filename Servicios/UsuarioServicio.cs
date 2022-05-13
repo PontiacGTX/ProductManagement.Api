@@ -53,7 +53,18 @@ namespace Servicios
 
             return Factory.ObtenerRespuesta<Respuesta>(new CrearUsuarioResponse { User =userCpy });
         }
+        public async Task<Respuesta> ExisteUsuario(ExisteUsuarioModel modelo)
+        {
+            ApplicationUser usuarioPeticion = await _UnidadRepositorio.UsuarioRepositorio.PrimeroOValorPredeterminado(x => x.Email == modelo.UsuarioPeticion.Email);
+            if (usuarioPeticion is null)
+            {
+                return Factory.ObtenerRespuesta<Respuesta>(null, 401, $"Denied couldn't find an user with email {modelo.UsuarioPeticion.Email}");
+            }
 
+            bool existe = await _UnidadRepositorio.UsuarioRepositorio.PrimeroOValorPredeterminado(x => x.Email == modelo.Usuario.Email) is not null;
+
+            return Factory.ObtenerRespuesta<Respuesta>(new ExisteUsuarioResponse { Existe = existe });
+        }
         public async Task<Respuesta> ModificarUsuario(ModificarUsuarioModel modelo)
         {
             ApplicationUser usuarioPeticion=await   _UnidadRepositorio.UsuarioRepositorio.PrimeroOValorPredeterminado(x => x.Email == modelo.UsuarioPeticion.Email);
