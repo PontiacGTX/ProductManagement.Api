@@ -39,7 +39,9 @@ namespace ProductManagement.Api
             services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.User.RequireUniqueEmail = true;
-            }).AddEntityFrameworkStores<AppDbContext>();
+            }).AddEntityFrameworkStores<AppDbContext>()
+            .AddUserManager<UserManager<ApplicationUser>>();
+
             services.AddScoped<IRepository<Producto>, ProductoRepositorio>();
             services.AddScoped<IRepository<RegistroActividad>, RegistroActividadRepositorio>();
             services.AddScoped<IRepository<ProductoRegistroActividad>, RegistroActividadesProductoRepositorio>();
@@ -50,6 +52,7 @@ namespace ProductManagement.Api
 
             services.AddScoped<ProductosServicios>();
             services.AddScoped<UsuarioServicio>();
+            services.AddScoped<RegistroActividadServicio>();
 
             services.AddScoped<UnidadServicios>();
             services.AddControllers();
@@ -61,7 +64,7 @@ namespace ProductManagement.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext ctx)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext ctx, UserManager<ApplicationUser> userManager)
         {
             if (env.IsDevelopment())
             {
@@ -74,6 +77,11 @@ namespace ProductManagement.Api
 
             app.UseRouting();
             if (ctx.Database.EnsureCreated());
+            if (ctx.Users is not null)
+            {
+                ctx.SeedUserDb(userManager);
+            }
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

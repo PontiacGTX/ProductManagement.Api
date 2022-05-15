@@ -13,7 +13,7 @@ namespace Repository.Entities
         [Key]
         public int IDProductoRegistroActividad { get; set; }
         public int ID { get; set; }
-        [ForeignKey("IDProducto")]
+        [ForeignKey("ID")]
         public Producto Producto { get; set; }
         public int IDRegistroActividad { get; set; }
         [ForeignKey("IDRegistroActividad")]

@@ -155,12 +155,14 @@ namespace Servicios
                IDRegistroActividad = registro.IDRegistroActividad, 
                ID = prod.ID
            });
-            
-            return  Factory.ObtenerRespuesta<Respuesta>(new CrearProductoResponse
+
+            var response = new CrearProductoResponse
             {
                 IDActividad = registro.IDRegistroActividad,
                 Producto = prod
-            });
+            };
+            response.Producto.RegistroActividadProducto = null;
+            return  Factory.ObtenerRespuesta<Respuesta>(response);
         }
         public async Task<Respuesta> ActualizarProducto(ActualizarProductoModel modelo)
         {
@@ -205,9 +207,10 @@ namespace Servicios
             Producto producto =await  _UnidadRepositorio.ProductoRepositorio.ObtenerEntidad(modelo.IdProducto);
             if(producto is null)
             {
-                return Factory.ObtenerRespuesta<Respuesta>(true);
+                return Factory.ObtenerRespuesta<Respuesta>(new EliminarProductoResponse { Eliminado = true }, 404, "No Encontrado") ;
             }
             bool eliminado = await _UnidadRepositorio.ProductoRepositorio.Eliminar(producto);
+            eliminado = (await _UnidadRepositorio.ProductoRepositorio.ObtenerEntidad(producto.ID)).Habilitado == false;
              TipoActividad tipo = await _UnidadRepositorio.TipoActividadRepositorio.PrimeroOValorPredeterminado(x => x.Actividad == "Eliminar Producto");
             
             if(tipo is null)

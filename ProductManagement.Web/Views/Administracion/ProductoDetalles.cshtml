@@ -1,0 +1,77 @@
+﻿@model ProductoViewModel
+@{
+    string errorMessage = ViewBag.ErrorPeticion?.ToString();
+    ViewBag.Title = "Detalles Producto";
+}
+
+
+<h2>@ViewBag.Title</h2>
+<hr />
+<a class="btn btn-success" asp-action="Index" asp-controller="Administracion"> Lista Productos</a>
+<br />
+
+@if(!string.IsNullOrEmpty(errorMessage))
+{
+   <div>
+       <label>Uno o mas errores ocurrieron</label>
+       <ul>
+           <li class="errorMessageText">@errorMessage</li> 
+       </ul>
+   </div>
+}
+
+<div class="container rounded-border">
+   <div class="row">
+    <div class="col-sm">
+      <label asp-for="Descripcion"></label>
+      <input asp-for=Descripcion disabled="disabled"/>
+    </div>
+    <div class="col-sm">
+      <label asp-for="CantidadDisponible"></label>
+      <input asp-for="CantidadDisponible" disabled="disabled" />
+    </div>
+  </div>
+   <div class="row">
+    <div class="col-sm">
+      <label asp-for="Precio"></label>
+      <input asp-for=Precio disabled="disabled"  />
+    </div>
+    <div class="col-sm">
+      <label>
+        <span>Estado:@(Model.Habilitado ?"Habilitado":"Inhabilitado")</span>
+      </label>
+    </div>
+  </div>
+</div>
+ <div class="container">
+    <a class="btn btn-primary" asp-action="EditarProducto" asp-controller="Administracion" asp-route-ID="@Model.ID" >Editar</a>
+    <a class="waves-effect waves-light btn modal-trigger" id="btnEliminar" href="#modal1" >Eliminar</a>
+ </div>
+ @*<a id="modelTrigger" class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+*@
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Eliminar @Model.Descripcion ?</h4>
+      <p>Confirma que desea eliminar el producto @Model.Descripcion Id(@Model.ID)</p>
+    </div>
+    <div class="modal-footer">
+      <a  id="modelTrigger"  asp-action="EliminarProducto" asp-controller="Administracion" asp-route-ID="@Model.ID" class="modal-close waves-effect waves-green btn-flat">Aceptar</a>
+      <a href="#!" id="cancelarModelBtn" class="modal-close waves-effect waves-red btn-flat">Cancelar</a>
+    </div>
+  </div>
+  <script>
+  function displayModal(event)
+  {
+      event.preventDefault();
+      console.log('HEY');
+      $.ajax({
+        url: '/Administracion/EliminarProducto?ID=@Model.ID',
+        type: 'GET',
+        contentType: false,
+        processData: false,
+        success: location.href = '/Administracion/Index'
+
+    });
+  }
+  </script>

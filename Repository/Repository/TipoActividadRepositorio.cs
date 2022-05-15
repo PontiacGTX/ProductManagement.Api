@@ -110,5 +110,10 @@ namespace Repository.Repository
 
             return await _Db.SaveChangesAsync() > 0;
         }
+
+        public Task<IList<TipoActividad>> ObtenerEntidades<TProperty, TSecondProperty>(Expression<Func<TipoActividad, bool>> selector, Expression<Func<TipoActividad, TProperty>> includeClause, Expression<Func<TipoActividad, TSecondProperty>> secondIncludeClause)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

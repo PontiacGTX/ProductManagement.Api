@@ -10,10 +10,12 @@ namespace Servicios
     {
         public ProductosServicios  ProductosServicios { get; set; }
         public UsuarioServicio UsuarioServicios { get; set; }
-        public UnidadServicios(ProductosServicios productosServicios, UsuarioServicio usuarioServicio)
+        public RegistroActividadServicio RegistroActividadServicio { get; set; }
+        public UnidadServicios(ProductosServicios productosServicios, UsuarioServicio usuarioServicio, RegistroActividadServicio registroActividadServicio)
         {
             ProductosServicios = productosServicios;
             UsuarioServicios = usuarioServicio;
+            RegistroActividadServicio = registroActividadServicio;
         }
     }
 }

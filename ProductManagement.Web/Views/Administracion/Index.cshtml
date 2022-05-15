@@ -1,0 +1,83 @@
+﻿@model AdministracionIndexViewModel
+@{
+    ViewBag.Title = "Administracion Index";
+}
+
+
+<h1>Administracion</h1>
+<br />
+
+<h4>Productos</h4>
+<div>
+    <a asp-action="AgregarProducto" asp-controller="Administracion" class="btn btn-success">Agregar</a>
+</div>
+<table class="content-table">
+    <thead>
+        <tr style="display:flexbox;">
+            <th>ID Producto</th>
+             <th>Descripcion Producto</th>
+            <th>Cantidad Disponible</th>
+            <th>Precio</th>
+            <th>Habilitado</th>
+            <th>Acciones</th>
+         </tr>
+   </thead>
+   <tbody>
+        @foreach(var item in Model.Productos)
+        {
+             <tr style="display:flexbox;">
+                 <td>@item.ID</td>
+                 <td>@item.Descripcion</td>
+                 <td>@item.Existencia</td>
+                 <td>@item.Precio</td>
+                 <td>@(item.Habilitado ?"Disponble":"Inhabilitado")</td>
+                 <td>
+                     <a asp-action="EditarProducto" asp-controller="Administracion" asp-route-id="@item.ID" class="btn btn-success">Editar</a>
+                     <a  id="delete_@item.ID" href="#modal1" class="waves-effect waves-light btn modal-trigger btnDelete">Eliminar</a>
+                     <a asp-action="ProductoDetalles" asp-controller="Administracion" asp-route-id="@item.ID" class="btn btn-primary">Ver</a>
+                 </td>
+             </tr>
+        }
+    </tbody>
+</table>
+<div class="container">
+    <label ><a asp-action="Logs" asp-controller="Administracion"> Ver logs</a></label>
+</div>
+<div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>Eliminar Producto</h4>
+      <p>Confirma que desea eliminar el producto ?</p>
+    </div>
+    <div class="modal-footer">
+      <a  id="modelTriggerIndex"  asp-action="EliminarProducto" asp-controller="Administracion"  class="modal-close waves-effect waves-green btn-flat">Aceptar</a>
+      <a href="#!" id="cancelarModelBtn" class="modal-close waves-effect waves-red btn-flat">Cancelar</a>
+    </div>
+  </div>
+ <script>
+  function displayText(event)
+  {
+
+      event.preventDefault();
+      productId=getId(event.target.id);
+      console.log('HEY');
+    
+  }
+  var productId;
+  function getId(str){
+      let begin = str.indexOf('_')+1;
+      let end=str.length;
+      let id=str.substring(begin,end);
+      console.log(id);
+      return id;
+  }
+  function listenModal(event){
+
+   $.ajax({
+    url: '/Administracion/EliminarProducto?ID='+productId,
+    type: 'GET',
+    contentType: false,
+    processData: false,
+    success: location.href = '/Administracion/Index'
+     });
+  }
+  </script>

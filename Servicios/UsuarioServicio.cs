@@ -42,7 +42,7 @@ namespace Servicios
             RegistroActividad registroActividad = await _UnidadRepositorio.RegistroActividadRepositorio.Agregar(new RegistroActividad
             {
                 ActividadDescripcion = $"{nameof(CrearUsuario)}",
-                Detalles = $"Usuario Creado en {fecha}",
+                Detalles = $"Usuario {modelo.Email} Creado en {fecha}",
                 FechaActividad = fecha,
                 Id = user.Id,
                 IdTipoActividad = tipoActividad.IdTipoActividad,

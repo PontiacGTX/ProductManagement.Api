@@ -19,7 +19,7 @@ namespace ProductManagement.Web.Servicios
         HttpClient _HttpClient { get; set; }
         public AppSettingsAccess _AppSettings { get; }
 
-        string BuildUrl(string endpoint) => $"{_AppSettings.ApiBaseUrl}{endpoint}";
+        string BuildUrl(string endpoint,string parameter=null) => $"{_AppSettings.ApiBaseUrl}{endpoint}";
         public ProductosServicios(HttpClient httpClient, AppSettingsAccess appSettingsAccess)
         {
             _HttpClient = httpClient;
@@ -37,7 +37,7 @@ namespace ProductManagement.Web.Servicios
                 var producto = JsonConvert.SerializeObject(modelo);
                 responseMessage= await _HttpClient.PostAsync(url, new StringContent(producto,Encoding.UTF8, "application/json"));
                 respuesta = JsonConvert.DeserializeObject<Respuesta>(await responseMessage.Content.ReadAsStringAsync());
-                if(responseMessage.StatusCode is not System.Net.HttpStatusCode.OK || responseMessage.StatusCode is not System.Net.HttpStatusCode.Created || responseMessage.StatusCode  is not System.Net.HttpStatusCode.NotFound)
+                if (responseMessage.StatusCode is System.Net.HttpStatusCode.Unauthorized || responseMessage.StatusCode is System.Net.HttpStatusCode.BadRequest)
                 {
                     throw new ServerException(respuesta.Message,respuesta.StatusCode);
                 }
@@ -60,7 +60,7 @@ namespace ProductManagement.Web.Servicios
                 var producto = JsonConvert.SerializeObject(modelo);
                 responseMessage= await _HttpClient.PostAsync(url, new StringContent(producto,Encoding.UTF8, "application/json"));
                 respuesta = JsonConvert.DeserializeObject<Respuesta>(await responseMessage.Content.ReadAsStringAsync());
-                if(responseMessage.StatusCode is not System.Net.HttpStatusCode.OK || responseMessage.StatusCode is not System.Net.HttpStatusCode.Created || responseMessage.StatusCode  is not System.Net.HttpStatusCode.NotFound)
+                if (responseMessage.StatusCode is System.Net.HttpStatusCode.Unauthorized || responseMessage.StatusCode is System.Net.HttpStatusCode.BadRequest)
                 {
                     throw new ServerException(respuesta.Message,respuesta.StatusCode);
                 }
@@ -82,7 +82,7 @@ namespace ProductManagement.Web.Servicios
                 var producto = JsonConvert.SerializeObject(modelo);
                 responseMessage= await _HttpClient.PostAsync(url, new StringContent(producto,Encoding.UTF8, "application/json"));
                 respuesta = JsonConvert.DeserializeObject<Respuesta>(await responseMessage.Content.ReadAsStringAsync());
-                if(responseMessage.StatusCode is not System.Net.HttpStatusCode.OK || responseMessage.StatusCode is not System.Net.HttpStatusCode.Created || responseMessage.StatusCode  is not System.Net.HttpStatusCode.NotFound)
+                if (responseMessage.StatusCode is System.Net.HttpStatusCode.Unauthorized || responseMessage.StatusCode is System.Net.HttpStatusCode.BadRequest)
                 {
                     throw new ServerException(respuesta.Message,respuesta.StatusCode);
                 }
@@ -106,7 +106,7 @@ namespace ProductManagement.Web.Servicios
                 var producto = JsonConvert.SerializeObject(modelo);
                 responseMessage = await _HttpClient.PostAsync(url, new StringContent(producto, Encoding.UTF8, "application/json"));
                 respuesta = JsonConvert.DeserializeObject<Respuesta>(await responseMessage.Content.ReadAsStringAsync());
-                if (responseMessage.StatusCode is not System.Net.HttpStatusCode.OK || responseMessage.StatusCode is not System.Net.HttpStatusCode.Created || responseMessage.StatusCode is not System.Net.HttpStatusCode.NotFound)
+                if (responseMessage.StatusCode is System.Net.HttpStatusCode.Unauthorized || responseMessage.StatusCode is System.Net.HttpStatusCode.BadRequest)
                 {
                     throw new ServerException(respuesta.Message, respuesta.StatusCode);
                 }
@@ -129,7 +129,7 @@ namespace ProductManagement.Web.Servicios
                 var producto = JsonConvert.SerializeObject(modelo);
                 responseMessage = await _HttpClient.PostAsync(url, new StringContent(producto, Encoding.UTF8, "application/json"));
                 respuesta = JsonConvert.DeserializeObject<Respuesta>(await responseMessage.Content.ReadAsStringAsync());
-                if (responseMessage.StatusCode is not System.Net.HttpStatusCode.OK || responseMessage.StatusCode is not System.Net.HttpStatusCode.Created || responseMessage.StatusCode is not System.Net.HttpStatusCode.NotFound)
+                if (responseMessage.StatusCode is System.Net.HttpStatusCode.Unauthorized || responseMessage.StatusCode is System.Net.HttpStatusCode.BadRequest)
                 {
                     throw new ServerException(respuesta.Message, respuesta.StatusCode);
                 }
@@ -151,7 +151,7 @@ namespace ProductManagement.Web.Servicios
                 var producto = JsonConvert.SerializeObject(modelo);
                 responseMessage = await _HttpClient.PostAsync(url, new StringContent(producto, Encoding.UTF8, "application/json"));
                 respuesta = JsonConvert.DeserializeObject<Respuesta>(await responseMessage.Content.ReadAsStringAsync());
-                if (responseMessage.StatusCode is not System.Net.HttpStatusCode.OK || responseMessage.StatusCode is not System.Net.HttpStatusCode.Created || responseMessage.StatusCode is not System.Net.HttpStatusCode.NotFound)
+                if (responseMessage.StatusCode is System.Net.HttpStatusCode.Unauthorized || responseMessage.StatusCode is System.Net.HttpStatusCode.BadRequest)
                 {
                     throw new ServerException(respuesta.Message, respuesta.StatusCode);
                 }
@@ -174,7 +174,7 @@ namespace ProductManagement.Web.Servicios
                 var producto = JsonConvert.SerializeObject(modelo);
                 responseMessage = await _HttpClient.PostAsync(url, new StringContent(producto, Encoding.UTF8, "application/json"));
                 respuesta = JsonConvert.DeserializeObject<Respuesta>(await responseMessage.Content.ReadAsStringAsync());
-                if (responseMessage.StatusCode is not System.Net.HttpStatusCode.OK || responseMessage.StatusCode is not System.Net.HttpStatusCode.Created || responseMessage.StatusCode is not System.Net.HttpStatusCode.NotFound)
+                if (responseMessage.StatusCode is System.Net.HttpStatusCode.Unauthorized || responseMessage.StatusCode is System.Net.HttpStatusCode.BadRequest)
                 {
                     throw new ServerException(respuesta.Message, respuesta.StatusCode);
                 }
@@ -196,11 +196,14 @@ namespace ProductManagement.Web.Servicios
                 var producto = JsonConvert.SerializeObject(modelo);
                 responseMessage = await _HttpClient.PostAsync(url, new StringContent(producto, Encoding.UTF8, "application/json"));
                 respuesta = JsonConvert.DeserializeObject<Respuesta>(await responseMessage.Content.ReadAsStringAsync());
-                if (responseMessage.StatusCode is not System.Net.HttpStatusCode.OK || responseMessage.StatusCode is not System.Net.HttpStatusCode.Created || responseMessage.StatusCode is not System.Net.HttpStatusCode.NotFound)
+                
+
+                if (responseMessage.StatusCode is System.Net.HttpStatusCode.Unauthorized || responseMessage.StatusCode is System.Net.HttpStatusCode.BadRequest)
                 {
                     throw new ServerException(respuesta.Message, respuesta.StatusCode);
                 }
-                return JsonConvert.DeserializeObject<ObtenerProductosResponse>(respuesta.Data.ToString()).Productos;
+               return JsonConvert.DeserializeObject<ObtenerProductosResponse>(respuesta.Data.ToString()).Productos;
+                
             }
             catch (Exception)
             {

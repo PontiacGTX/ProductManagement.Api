@@ -84,5 +84,10 @@ namespace Repository.Repository
             var saved = await _Db.SaveChangesAsync() > 0;
             return saved;
         }
+
+        public Task<IList<ApplicationUser>> ObtenerEntidades<TProperty, TSecondProperty>(Expression<Func<ApplicationUser, bool>> selector, Expression<Func<ApplicationUser, TProperty>> includeClause, Expression<Func<ApplicationUser, TSecondProperty>> secondIncludeClause)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

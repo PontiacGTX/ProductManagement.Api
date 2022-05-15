@@ -36,6 +36,8 @@ namespace ProductManagement.Web
             services.AddSingleton<HttpClient>();
             services.AddScoped<AppSettingsAccess>(obj => new AppSettingsAccess(Directory.GetCurrentDirectory()));
             services.AddScoped<ProductosServicios>();
+            services.AddScoped<UsuarioServicios>();
+            services.AddScoped<UnidadServicios>();
             services.AddControllersWithViews();
         }
 
@@ -48,7 +50,8 @@ namespace ProductManagement.Web
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                //app.UseExceptionHandler("/Home/Error");
+                app.UseStatusCodePagesWithReExecute("/error", "?error={0}");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }

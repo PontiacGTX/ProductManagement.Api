@@ -35,13 +35,15 @@ namespace Shared
         public string EndpointExisteUsuario => Configuration["ServiciosAdministracion:ExisteUsuario"];
         public string EndpointCrearUsuario => Configuration["ServiciosAdministracion:CrearUsuario"];
         public string EndpointAgregarProducto => Configuration["ServiciosAdministracion:AgregarProducto"];
-        public string EndpointEliminarProducto => Configuration["ServiciosAdministracion:EliminarProductos"];
+        public string EndpointEliminarProducto => Configuration["ServiciosAdministracion:EliminarProducto"];
         public string EndpointActualizarProducto => Configuration["ServiciosAdministracion:ActualizarProducto"];
         public string EndpointExisteNombreProducto => Configuration["ServiciosAdministracion:ExisteNombreProducto"];
         public string EndpointExisteIdProducto => Configuration["ServiciosAdministracion:ExisteIdProducto"];
         public string EndpointObtenerProducto => Configuration["ServiciosAdministracion:ObtenerProducto"];
         public string EndpointObtenerListaProductos => Configuration["ServiciosAdministracion:ObtenerListaProductos"];
         public string EndpointObtenerTodosProductos => Configuration["ServiciosAdministracion:ObtenerTodosProductos"];
+        public string EndpointObtenerLogs => Configuration["ServiciosAdministracion:ObtenerLogs"];
+        public string EndpointObtenerLogsProductos => Configuration["ServiciosAdministracion:ObtenerLogsProductos"];
 
 
 

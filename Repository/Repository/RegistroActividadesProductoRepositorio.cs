@@ -124,5 +124,8 @@ namespace Repository.Repository
 
             return await _Db.SaveChangesAsync() > 0;
         }
+
+        public async Task<IList<ProductoRegistroActividad>> ObtenerEntidades<TProperty, TSecondProperty>(Expression<Func<ProductoRegistroActividad, bool>> selector, Expression<Func<ProductoRegistroActividad, TProperty>> includeClause, Expression<Func<ProductoRegistroActividad, TSecondProperty>> secondIncludeClause)
+        => await _Db.ProductoRegistroActividades.Include(includeClause).Include(secondIncludeClause).Where(selector).ToListAsync();
     }
 }

@@ -20,6 +20,68 @@ namespace ProductManagement.Api.Controllers
         {
             UnidadServicios = unidadServicios;
         }
+        [HttpPost("Logs/Logs/Productos")]
+        public async Task<IActionResult> ObtenerLogsProductos(ObtenerLogsProductosModel modelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Respuesta respuesta = await UnidadServicios.RegistroActividadServicio.ObtenerLogsProductos(modelo);
+                    return respuesta.StatusCode switch
+                    {
+                        StatusCodes.Status200OK => Ok(respuesta),
+                        StatusCodes.Status401Unauthorized => StatusCode(StatusCodes.Status401Unauthorized, respuesta),
+                        StatusCodes.Status404NotFound => StatusCode(StatusCodes.Status404NotFound, respuesta),
+                        _ => throw new ServerException(string.IsNullOrEmpty(respuesta.Message) ? "There was an unexpected error" : respuesta.Message, respuesta.StatusCode),
+                    };
+                }
+                catch (System.Exception ex)
+                {
+                    string message = ex.Message;
+                    if (ex is ServerException)
+                    {
+                        message = string.Concat(ex.Message, $" HttpStatus: {(ex as ServerException).ApiCode}");
+                    }
+                    return StatusCode(StatusCodes.Status500InternalServerError, Factory.ObtenerRespuesta<InternalServerErrorResponse>(null, message: message));
+                }
+
+            }
+
+            string validationMessage = ModelState.GetErrors();
+            return StatusCode(StatusCodes.Status400BadRequest, Factory.ObtenerRespuesta<Respuesta>(null, StatusCodes.Status400BadRequest, validationMessage));
+        }
+        [HttpPost("Logs/Logs/Todos")]
+        public async Task<IActionResult> ObtenerTodosLogs(ObtenerTodosLogsModel modelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Respuesta respuesta = await UnidadServicios.RegistroActividadServicio.ObtenerTodosLogs(modelo);
+                    return respuesta.StatusCode switch
+                    {
+                        StatusCodes.Status200OK => Ok(respuesta),
+                        StatusCodes.Status401Unauthorized => StatusCode(StatusCodes.Status401Unauthorized, respuesta),
+                        StatusCodes.Status404NotFound => StatusCode(StatusCodes.Status404NotFound, respuesta),
+                        _ => throw new ServerException(string.IsNullOrEmpty(respuesta.Message) ? "There was an unexpected error" : respuesta.Message, respuesta.StatusCode),
+                    };
+                }
+                catch (System.Exception ex)
+                {
+                    string message = ex.Message;
+                    if (ex is ServerException)
+                    {
+                        message = string.Concat(ex.Message, $" HttpStatus: {(ex as ServerException).ApiCode}");
+                    }
+                    return StatusCode(StatusCodes.Status500InternalServerError, Factory.ObtenerRespuesta<InternalServerErrorResponse>(null, message: message));
+                }
+
+            }
+
+            string validationMessage = ModelState.GetErrors();
+            return StatusCode(StatusCodes.Status400BadRequest, Factory.ObtenerRespuesta<Respuesta>(null, StatusCodes.Status400BadRequest, validationMessage));
+        }
 
         [HttpPost("Usuarios/Usuario/Obtener")]
         public async Task<IActionResult> ObtenerUsuario(ObtenerUsuarioModel modelo)

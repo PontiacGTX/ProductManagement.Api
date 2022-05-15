@@ -19,5 +19,6 @@ namespace Repository.Repository
         public Task<T> Modificar<TID>(TID id,T entidad);
         public Task<bool> Eliminar<TID>(TID id);
         public Task<bool> Eliminar(T entidad);
+        public Task<IList<T>> ObtenerEntidades<TProperty, TSecondProperty>(Expression<Func<T, bool>> selector, Expression<Func<T, TProperty>> includeClause, Expression<Func<T, TSecondProperty>> secondIncludeClause);
     }
 }

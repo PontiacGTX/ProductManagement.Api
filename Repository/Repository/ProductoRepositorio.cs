@@ -103,6 +103,7 @@ namespace Repository.Repository
             productoModificar.Descripcion = entidad.Descripcion;
             productoModificar.Existencia = entidad.Existencia;
             productoModificar.Precio = entidad.Precio;
+            productoModificar.Habilitado = entidad.Habilitado;
             return (await _Db.SaveChangesAsync() > 0) ? productoModificar : null;
         }
 
@@ -123,5 +124,10 @@ namespace Repository.Repository
 
         Task<Producto> IRepository<Producto>.PrimeroOValorPredeterminado(Expression<Func<Producto, bool>> selector)
         => _Db.Productos.FirstOrDefaultAsync(selector);
+
+        public Task<IList<Producto>> ObtenerEntidades<TProperty, TSecondProperty>(Expression<Func<Producto, bool>> selector, Expression<Func<Producto, TProperty>> includeClause, Expression<Func<Producto, TSecondProperty>> secondIncludeClause)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

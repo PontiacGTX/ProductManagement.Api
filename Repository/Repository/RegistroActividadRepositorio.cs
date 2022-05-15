@@ -95,5 +95,10 @@ namespace Repository.Repository
             var entry = await _Db.RegistroActividad.AddAsync(entidad);
             return await _Db.SaveChangesAsync() > 0 ? entry.Entity : null;
         }
+
+        public Task<IList<RegistroActividad>> ObtenerEntidades<TProperty, TSecondProperty>(Expression<Func<RegistroActividad, bool>> selector, Expression<Func<RegistroActividad, TProperty>> includeClause, Expression<Func<RegistroActividad, TSecondProperty>> secondIncludeClause)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

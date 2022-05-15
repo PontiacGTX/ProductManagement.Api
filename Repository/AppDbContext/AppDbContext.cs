@@ -43,8 +43,10 @@ namespace Repository.AppDbContext
                 new TipoActividad { Actividad="Eliminar Usuario", IdTipoActividad=7 },
                 new TipoActividad { Actividad="Leer Usuario", IdTipoActividad=8 }
             });
+           
             base.OnModelCreating(modelBuilder);
         }
+      
         
     }
 }

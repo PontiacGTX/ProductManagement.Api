@@ -1,0 +1,36 @@
+﻿@model ProductoViewModel
+@{
+    ViewBag.Title = "Editar Producto";
+}
+
+
+<h2>ViewBag.Title</h2>
+<hr />
+<form asp-action="EditarProducto" asp-controller="Administracion" method="post">
+<div class="container rounded-border">
+  <input asp-for="ID" type="hidden" />
+  <div class="row">
+    <div class="col-sm">
+      <label asp-for="Descripcion"></label>
+      <input asp-for=Descripcion  />
+    </div>
+    <div class="col-sm">
+      <label asp-for="CantidadDisponible"></label>
+      <input asp-for="CantidadDisponible" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      <label asp-for="Precio"></label>
+      <input asp-for=Precio  />
+    </div>
+    <div class="col-sm">
+      <label>
+        <input type="checkbox" asp-for="Habilitado" />
+        <span>Habilitado</span>
+      </label>
+    </div>
+  </div>
+<button class="btn btn-primary" type="submit" >Agregar</button>
+</div>
+</form>
