@@ -1,0 +1,32 @@
+﻿@model LogsProductosViewModel
+@{
+    ViewBag.Title = "Actividades de productos";
+}
+<h2>@ViewBag.Title</h2>
+<hr />
+
+<a class="btn btn-success" asp-action="Index" asp-controller="Administracion"> Lista Productos</a>
+<br />
+<table class="content-table">
+    <thead>
+        <tr style="display:flexbox;">
+            <th>ID </th>
+             <th>Descripcion</th>
+            <th>Tipo</th>
+            <th>Usuario</th>
+            <th>Fecha</th>
+         </tr>
+   </thead>
+   <tbody>
+        @foreach(var item in Model.LogsActividades)
+        {
+             <tr style="display:flexbox;">
+                 <td>@item.IDActividadProducto</td>
+                 <td>@item.Descripcion</td>
+                 <td>@item.TipoActividad</td>
+                 <td>@item.UsuarioPeticion</td>
+                 <td>@item.Fecha</td>
+             </tr>
+        }
+    </tbody>
+</table>

@@ -25,7 +25,7 @@ namespace Repository.AppDbContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Producto>().HasKey(x => x.ID);
-            modelBuilder.Entity<ProductoRegistroActividad>().HasKey(x => x.ID);
+            modelBuilder.Entity<ProductoRegistroActividad>().HasKey(x => x.IDProductoRegistroActividad);
             modelBuilder.Entity<RegistroActividad>().HasKey(x=>x.IDRegistroActividad);
             modelBuilder.Entity<RegistroActividad>().HasOne(x => x.Usuario).WithMany(x => x.RegistroActividades);
             modelBuilder.Entity<RegistroActividad>().HasOne(x => x.TipoArchividad).WithMany(x => x.RegistroActividades);

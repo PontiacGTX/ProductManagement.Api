@@ -7,8 +7,10 @@
 <h1>Administracion</h1>
 <br />
 
-<h4>Productos</h4>
+<h4>Productos</h4> <label >
+
 <div>
+    <a asp-action="LogsProductos" asp-controller="Administracion"> Ver logs</a></label>
     <a asp-action="AgregarProducto" asp-controller="Administracion" class="btn btn-success">Agregar</a>
 </div>
 <table class="content-table">
@@ -40,9 +42,6 @@
         }
     </tbody>
 </table>
-<div class="container">
-    <label ><a asp-action="Logs" asp-controller="Administracion"> Ver logs</a></label>
-</div>
 <div id="modal1" class="modal">
     <div class="modal-content">
       <h4>Eliminar Producto</h4>

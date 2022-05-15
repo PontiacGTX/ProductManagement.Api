@@ -183,17 +183,22 @@ namespace Servicios
 
             DateTime fecha = DateTime.Now;
 
-            await _UnidadRepositorio.RegistroActividadRepositorio.Agregar(new RegistroActividad
+           RegistroActividad registroActividad =  await _UnidadRepositorio.RegistroActividadRepositorio.Agregar(new RegistroActividad
             {
                 ActividadDescripcion = $"{nameof(ActualizarProducto)}",
                 FechaActividad = fecha,
                 IdTipoActividad = tipo.IdTipoActividad,
                 Id = user.Id
             });
-
+            Producto prod = await _UnidadRepositorio.ProductoRepositorio.ObtenerEntidad(modelo.IDProducto);
+            await _UnidadRepositorio.RegistroActividadProducto.Agregar(new ProductoRegistroActividad
+            {
+                IDRegistroActividad = registroActividad.IDRegistroActividad,
+                ID = prod.ID
+            });
             return Factory.ObtenerRespuesta<Respuesta>(new ActualizarProductoResponse
             {
-                Producto = await _UnidadRepositorio.ProductoRepositorio.ObtenerEntidad(modelo.IDProducto)
+                Producto = prod
             });
         }
         
@@ -222,12 +227,18 @@ namespace Servicios
 
             DateTime fecha = DateTime.Now;
 
-            await _UnidadRepositorio.RegistroActividadRepositorio.Agregar(new RegistroActividad
+            RegistroActividad registroActividad = await _UnidadRepositorio.RegistroActividadRepositorio.Agregar(new RegistroActividad
             {
                 ActividadDescripcion = $"{nameof(EliminarProducto)}",
                 FechaActividad = fecha,
+                Detalles =$"User {modelo.Usuario.Email} deleted {modelo.IdProducto}",
                 IdTipoActividad = tipo.IdTipoActividad, 
                 Id = user.Id 
+            });
+            await _UnidadRepositorio.RegistroActividadProducto.Agregar(new ProductoRegistroActividad
+            {
+                IDRegistroActividad = registroActividad.IDRegistroActividad,
+                ID = modelo.IdProducto
             });
             return Factory.ObtenerRespuesta<Respuesta>(new EliminarProductoResponse
             { 

@@ -3,6 +3,9 @@ using ProductManagement.Web.Models;
 using ProductManagement.Web.Servicios;
 using System.Threading.Tasks;
 using Repository.Entities;
+using Repository.Models.Response;
+using System.Collections.Generic;
+
 namespace ProductManagement.Web.Controllers
 {
     public class AdministracionController : Controller
@@ -27,6 +30,22 @@ namespace ProductManagement.Web.Controllers
                 email = "admin@mail.com";
             }
             return email;
+        }
+        [HttpGet]
+        public async Task<IActionResult> LogsProductos()
+        {
+            try
+            {
+                var email = GetEmailOrDefault();
+                IList<ActividadProducto> actividades = await UnidadServicios.LogsServicios.ObtenerLogsProductos(new Repository.Models.Requests.ObtenerLogsProductosModel { UsuarioPeticion = new Repository.Models.InformacionUsuario { Email = email } });
+                  
+                return View(new LogsProductosViewModel { LogsActividades = actividades });
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
         }
         [HttpGet]
         public async Task<IActionResult> EditarProducto(int ID)

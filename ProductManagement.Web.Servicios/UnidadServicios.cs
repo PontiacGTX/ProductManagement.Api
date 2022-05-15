@@ -10,10 +10,12 @@ namespace ProductManagement.Web.Servicios
     {
         public ProductosServicios ProductosServicios { get; set; }
         public UsuarioServicios UsuarioServicios { get; set; }
-        public UnidadServicios(ProductosServicios productosServicios, UsuarioServicios usuarioServicios)
+        public LogsServicios LogsServicios { get; set; }
+        public UnidadServicios(ProductosServicios productosServicios, UsuarioServicios usuarioServicios, LogsServicios logsServicios)
         {
             UsuarioServicios = usuarioServicios;
-            ProductosServicios = productosServicios;    
+            ProductosServicios = productosServicios;
+            LogsServicios= logsServicios;
         }
     }
 }

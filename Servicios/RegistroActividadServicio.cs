@@ -32,7 +32,7 @@ namespace Servicios
             List<ProductoRegistroActividad> registros = (List<ProductoRegistroActividad>)await _UnidadRepositorio.RegistroActividadProducto.ObtenerEntidades<RegistroActividad, Producto>(x => x != null, include => include.RegistroActividad, include => include.Producto);
             ObtenerTodosLogsResponse logs = new ObtenerTodosLogsResponse();
             Dictionary<int,TipoActividad> actividades = (await _UnidadRepositorio.TipoActividadRepositorio.ObtenerEntidades()).ToDictionary(x=>x.IdTipoActividad, y=>y);
-            var y = registros.Select(async x => await Task.FromResult(new LogGenerico
+            var y = registros.Select(async x => new LogGenerico
             {
 
                 IDActividadProducto = x.IDProductoRegistroActividad,
@@ -43,8 +43,8 @@ namespace Servicios
                 UsuarioSolicitado = (await _UnidadRepositorio.UsuarioRepositorio.ObtenerEntidad(x.RegistroActividad.Id)).Email
 
 
-            })).ToArray();
-            logs.RegistroActividad = (await Task.WhenAll(y)).Select(x=>x).ToList();
+            }).ToArray();
+            logs.RegistroActividad = (await Task.WhenAll(y)).Where(x=>x!=null).Select(x=>x).ToList();
             return Factory.ObtenerRespuesta<Respuesta>(logs);
         }
         public async Task<Respuesta> ObtenerLogsProductos(ObtenerLogsProductosModel modelo)
@@ -59,16 +59,18 @@ namespace Servicios
             {
                 return Factory.ObtenerRespuesta<InternalServerErrorResponse>(null, 500, $"Couldn't find Activities related to this entity");
             }
-            List<ProductoRegistroActividad> registros= (List<ProductoRegistroActividad>)await _UnidadRepositorio.RegistroActividadProducto.ObtenerEntidades<RegistroActividad, Producto>(x => tipos.Any(y => y.IdTipoActividad == x.RegistroActividad.IdTipoActividad), include => include.RegistroActividad, include => include.Producto);
+            var tiposIdList = tipos.Select(x => x.IdTipoActividad);
+            List<ProductoRegistroActividad> registros= (List<ProductoRegistroActividad>)await _UnidadRepositorio.RegistroActividadProducto.ObtenerEntidades<RegistroActividad, Producto>(x => tiposIdList.Contains(x.RegistroActividad.IdTipoActividad), include => include.RegistroActividad, include => include.Producto);
             ObtenerLogsProductosResponse logsProductos = new ObtenerLogsProductosResponse();
-            logsProductos.RegistroActividad = (IList<ActividadProducto>)registros.Select(async x => new ActividadProducto 
+            var tasks=registros.Select(async x => new ActividadProducto 
             { 
                 Fecha = x.RegistroActividad.FechaActividad,
                 Descripcion = x.Producto.Descripcion,
                 TipoActividad = tipos.FirstOrDefault(y => y.IdTipoActividad == x.RegistroActividad.IdTipoActividad)?.Actividad, IDActividadProducto = x.IDProductoRegistroActividad, 
                 UsuarioPeticion = (await _UnidadRepositorio.UsuarioRepositorio.ObtenerEntidad(x.RegistroActividad.Id))?.Email
-            }).ToList();
-
+            }).ToArray();
+            IList<ActividadProducto> actividadProductos =(await Task.WhenAll(tasks)).Where(x=>x!=null).Select(x => x).ToList();
+            logsProductos.RegistroActividad = actividadProductos;
             return Factory.ObtenerRespuesta<Respuesta>(logsProductos);
         }
     }

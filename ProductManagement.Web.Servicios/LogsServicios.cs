@@ -31,7 +31,7 @@ namespace ProductManagement.Web.Servicios
             Respuesta respuesta = null;
             try
             {
-                var url = BuildUrl(_AppSettings.EndpointObtenerTodosProductos);
+                var url = BuildUrl(_AppSettings.EndpointObtenerLogsProductos);
                 var peticion = JsonConvert.SerializeObject(modelo);
                 responseMessage = await _HttpClient.PostAsync(url, new StringContent(peticion, Encoding.UTF8, "application/json"));
                 respuesta = JsonConvert.DeserializeObject<Respuesta>(await responseMessage.Content.ReadAsStringAsync());

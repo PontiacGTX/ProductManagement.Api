@@ -37,6 +37,7 @@ namespace ProductManagement.Web
             services.AddScoped<AppSettingsAccess>(obj => new AppSettingsAccess(Directory.GetCurrentDirectory()));
             services.AddScoped<ProductosServicios>();
             services.AddScoped<UsuarioServicios>();
+            services.AddScoped<LogsServicios>();
             services.AddScoped<UnidadServicios>();
             services.AddControllersWithViews();
         }
@@ -67,7 +68,7 @@ namespace ProductManagement.Web
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Administracion}/{action=Index}/{id?}");
             });
         }
     }
